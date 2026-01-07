@@ -1,0 +1,135 @@
+==================================================
+          FLEXIMART DATA QUALITY REPORT
+==================================================
+
+Project Name   : FlexiMart Data Pipeline
+ETL Script     : etl_pipeline.py
+Database       : FLEXIMART_DATA
+Execution      : SUCCESS
+
+--------------------------------------------------
+1. EXTRACT PHASE – RECORDS PROCESSED
+--------------------------------------------------
+
+Customers Raw Records Processed : 26
+Products Raw Records Processed  : 20
+Sales Raw Records Processed     : 41
+
+(All CSV files were successfully read using Pandas.)
+
+--------------------------------------------------
+2. TRANSFORM PHASE – DATA CLEANING SUMMARY
+--------------------------------------------------
+
+A. CUSTOMERS DATA
+--------------------------------------------------
+
+Initial Customer Records : 26
+
+Data Quality Issues Identified:
+- Missing email values
+- Invalid email formats
+- Duplicate customer records
+- Inconsistent phone number formats
+- Mixed registration date formats
+- Inconsistent city name casing
+
+Transformations Performed:
+- Converted phone numbers to string format
+- Standardized phone numbers to +91 XXXXXXXXXX
+- Validated emails using regex
+- Generated system emails for missing/invalid emails
+- Removed duplicate customers based on email
+- Standardized city names to Title Case
+- Converted registration dates to YYYY-MM-DD format
+
+Cleaning Results:
+- Missing / Invalid emails handled : 5
+- Duplicate customer records removed : 1
+- Final clean customer records : 25
+
+--------------------------------------------------
+B. PRODUCTS DATA
+--------------------------------------------------
+
+Initial Product Records : 20
+
+Data Quality Issues Identified:
+- Inconsistent category values (electronics, ELECTRONICS, fashion, etc.)
+- Missing price values
+- Missing stock quantity values
+
+Transformations Performed:
+- Standardized categories to Electronics, Fashion, Groceries
+- Filled missing prices using category-wise median
+- Filled missing stock quantities with 0
+- Sorted products by product_id
+
+Cleaning Results:
+- Missing prices fixed : 3
+- Missing stock quantities fixed : 1
+- Duplicate product records removed : 0
+- Final clean product records : 20
+
+--------------------------------------------------
+C. SALES DATA
+--------------------------------------------------
+
+Initial Sales Records : 41
+
+Data Quality Issues Identified:
+- Duplicate transaction records
+- Missing customer_id
+- Missing product_id
+- Mixed transaction date formats
+
+Transformations Performed:
+- Removed duplicate transactions
+- Dropped rows with missing customer_id
+- Dropped rows with missing product_id
+- Standardized transaction dates to YYYY-MM-DD
+- Added total_amount column (quantity × unit_price)
+- Enforced strict foreign key validation
+
+Cleaning Results:
+- Duplicate transactions removed : 1
+- Rows dropped (missing customer_id) : 3
+- Rows dropped (missing product_id) : 2
+- Final clean sales records : 35
+
+--------------------------------------------------
+3. LOAD PHASE – DATABASE INSERT SUMMARY
+--------------------------------------------------
+
+Customers Records Loaded   : 25
+Products Records Loaded    : 20
+Orders Records Loaded      : 35
+Order Items Records Loaded : 35
+
+Orders Skipped      : 0
+Order Items Skipped : 0
+
+(All foreign key constraints successfully enforced.)
+
+--------------------------------------------------
+4. FINAL DATA QUALITY VALIDATION
+--------------------------------------------------
+
+- No NULL values in primary keys
+- No NULL values in foreign keys
+- No duplicate customer emails
+- All phone numbers standardized
+- All price and stock values populated
+- Referential integrity maintained across all tables
+
+--------------------------------------------------
+5. OVERALL PIPELINE STATUS
+--------------------------------------------------
+
+The FlexiMart ETL pipeline executed successfully.
+All datasets are clean, consistent, validated,
+and ready for analytics and reporting.
+
+--------------------------------------------------
+               END OF REPORT
+--------------------------------------------------
